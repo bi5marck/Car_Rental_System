@@ -6,21 +6,40 @@ import java.util.Date;
 /**
  * Author: z.wu
  * Date: 2019/10/17 16:48
+ * This method is Customer class and it uses {@link DrivingLicence} and {@link Person}.
  */
 public final class Customer {
     private final Person person;
     private final DrivingLicence drivingLicence;
     private String first_component;
     private String second_component;
-    private String third_component;
+    private final String third_component;
+    private final String first_name;
+    private final String last_name;
+    private final Boolean isFullLicence;
 
-    public Customer(Person person, DrivingLicence drivingLicence) {
-        this.person = person;
-        this.drivingLicence = drivingLicence;
+    /**
+     * This is the constructor of Customer class.
+     *
+     * @param first_name      is customer's first name.
+     * @param last_name       is customer's last name.
+     * @param dateOfIssie     is date object of customer's driving licence's issue date.
+     * @param isFullLicence   is if customer's driving licence is a full licence.
+     * @param third_component is customer's driving licence's third component.
+     * @throws IllegalArgumentException if third component is not 2 digits.
+     */
+    public Customer(String first_name, String last_name, Date dateOfIssie, Boolean isFullLicence, String third_component) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.isFullLicence = isFullLicence;
+        if ((third_component.length() != 2) && (third_component.matches("[0-9]{2}"))) {
+            throw new IllegalArgumentException("Third component of driving licence must be 2 numbers.");
+        }
+        this.third_component = third_component;
+        this.person = new Person(this.first_name, this.last_name);
+        this.drivingLicence = new DrivingLicence(dateOfIssie, this.isFullLicence);
         setFirst_component();
         setSecond_component();
-        setThird_component();
-
     }
 
     private void setFirst_component() {
@@ -34,8 +53,8 @@ public final class Customer {
         this.second_component = String.valueOf(calendar.get(Calendar.YEAR));
     }
 
-    private void setThird_component() {
-        this.third_component = drivingLicence.getThird_component();
+    public void setCustomersDob(Date date) {
+        person.setDateOfBirth(date);
     }
 
     public String getFirst_component() {
@@ -58,18 +77,36 @@ public final class Customer {
         return drivingLicence.isFullLicence();
     }
 
-    public Date getDrivingLicenceIssueDate() {
-        return (Date) drivingLicence.getDateOfIssie().clone();
+    /**
+     * This method can get customer's driving licence's issue date.
+     *
+     * @return the String type of customer's driving licence's issue date.
+     */
+    public String getDrivingLicenceIssueDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime((Date) drivingLicence.getDateOfIssie().clone());
+        return calendar.get(Calendar.YEAR) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     public String getCustomersName() {
         return person.getFirstName() + " " + person.getLastName();
     }
 
-    public Date getCustomersDob() {
+    public String getCustomersDob() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime((Date) person.getDateOfBirth().clone());
+        return calendar.get(Calendar.YEAR) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    Date getCustomersDobObj() {
         return (Date) person.getDateOfBirth().clone();
     }
 
+    /**
+     * Override equals() and hashcode() method so that
+     * customers who has the same name and date of birth
+     * will be considered as the same one.
+     */
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -79,19 +116,15 @@ public final class Customer {
         }
         final Customer customer = (Customer) o;
         return person.equals(customer.person)
-                && drivingLicence.equals(customer.drivingLicence)
-                && first_component.equals(customer.first_component)
-                && second_component.equals(customer.second_component)
-                && third_component.equals(customer.third_component);
+                && first_name.equals(customer.first_name)
+                && last_name.equals(customer.last_name);
     }
 
     public int hashCode() {
         int result = 31;
-        result = 31 * result + person.hashCode();
-        result = 31 * result + drivingLicence.hashCode();
-        result = 31 * result + first_component.hashCode();
-        result = 31 * result + second_component.hashCode();
-        result = 31 * result + third_component.hashCode();
+        ;
+        result = 31 * result + first_name.hashCode();
+        result = 31 * result + last_name.hashCode();
         return result;
     }
 
@@ -100,7 +133,7 @@ public final class Customer {
         return "Customer's name: " + getCustomersName() + "\n"
                 + "Customer's date of birth: " + getCustomersDob() + "\n"
                 + "Customer's driving licence number; " + getDrivingLicenceNumber() + "\n"
-                + "Is full licence: " + isFullLicence() + "\n"
+                + "Is full licence: " + isFullLicence + "\n"
                 + "Issue date of licence: " + getDrivingLicenceIssueDate() + "\n";
     }
 }

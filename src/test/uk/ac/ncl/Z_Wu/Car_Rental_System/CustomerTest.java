@@ -1,186 +1,172 @@
-package test.uk.ac.ncl.Z_Wu.Car_Rental_System; 
+package test.uk.ac.ncl.Z_Wu.Car_Rental_System;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.Before; 
-import org.junit.After;
 import uk.ac.ncl.Z_Wu.Car_Rental_System.Customer;
-import uk.ac.ncl.Z_Wu.Car_Rental_System.DrivingLicence;
-import uk.ac.ncl.Z_Wu.Car_Rental_System.Person;
 
+import java.util.Calendar;
 import java.util.Date;
 
-/** 
-* Customer Tester.
-* 
-* @author <Authors name> 
-* @since <pre>Ê®ÔÂ 17, 2019</pre> 
-* @version 1.0 
-*/ 
+import static org.junit.Assert.*;
+
+/**
+ * Customer Tester.
+ *
+ * @author Z.Wu
+ * @version 1.0
+ * @since <pre>oct 24, 2019</pre>
+ */
 public class CustomerTest {
 
+    /**
+     * Method: Customer()
+     * Test content: test constructor method
+     */
+    @Test
+    public void testCustomer() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
 
-private Person person_1=new Person("philips","wang");
-private Date date_1=new Date();
-private final DrivingLicence drivingLicence_1=new DrivingLicence(date_1,true);
-private Customer customer_1=new Customer(person_1,drivingLicence_1);
-@Before
-public void before() throws Exception { 
-} 
+        //Test first name is null.
+        try {
+            Customer customer_1 = new Customer("", "W", date, true, "07");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e.getMessage().contains("First name is null."));
+        }
 
-@After
-public void after() throws Exception { 
-} 
+        //Test last name is null.
+        try {
+            Customer customer_1 = new Customer("GY", "", date, true, "07");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e.getMessage().contains("Last name is null."));
+        }
 
-/** 
-* 
-* Method: getFirst_component() 
-* 
-*/ 
-@Test
-public void testGetFirst_component() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getFirst_component());
-} 
+        //Test third component is incorrect.
+        try {
+            Customer customer_1 = new Customer("Bob", "W", date, true, "ac");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e.getMessage().contains("Third component of driving licence must be 2 numbers."));
+        }
 
-/** 
-* 
-* Method: getSecond_component() 
-* 
-*/ 
-@Test
-public void testGetSecond_component() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getSecond_component());
-} 
+        try {
+            Customer customer_1 = new Customer("Bob", "W", date, true, "234");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e.getMessage().contains("Third component of driving licence must be 2 numbers."));
+        }
 
-/** 
-* 
-* Method: getThird_component() 
-* 
-*/ 
-@Test
-public void testGetThird_component() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getThird_component());
+        try {
+            Customer customer_1 = new Customer("Bob", "W", date, true, "2b");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e.getMessage().contains("Third component of driving licence must be 2 numbers."));
+        }
 
-} 
-
-/** 
-* 
-* Method: getDrivingLicenceNumber() 
-* 
-*/ 
-@Test
-public void testGetDrivingLicenceNumber() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getDrivingLicenceNumber());
-    System.out.println(customer_1.getThird_component());
-} 
-
-/** 
-* 
-* Method: isFullLicence() 
-* 
-*/ 
-@Test
-public void testIsFullLicence() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.isFullLicence());
-} 
-
-/** 
-* 
-* Method: getDrivingLicenceIssueDate()
-* 
-*/ 
-@Test
-public void testGetDrivingLicenceIssuedate() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getDrivingLicenceIssueDate());
-} 
-
-/** 
-* 
-* Method: getCustomersName() 
-* 
-*/ 
-@Test
-public void testGetCustomersName() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getCustomersName());
-} 
-
-/** 
-* 
-* Method: getCustomersDob() 
-* 
-*/ 
-@Test
-public void testGetCustomersDob() throws Exception { 
-//TODO: Test goes here...
-    System.out.println(customer_1.getCustomersDob());
-} 
+    }
 
 
-/** 
-* 
-* Method: setFirst_component() 
-* 
-*/ 
-@Ignore
-public void testSetFirst_component() throws Exception { 
-//TODO: Test goes here... 
-/* 
-try { 
-   Method method = Customer.getClass().getMethod("setFirst_component");
-   method.setAccessible(true); 
-   method.invoke(<Object>, <Parameters>); 
-} catch(NoSuchMethodException e) { 
-} catch(IllegalAccessException e) { 
-} catch(InvocationTargetException e) { 
-} 
-*/ 
-} 
+    /**
+     * Method: getFirst_component()
+     */
+    @Test
+    public void testGetFirst_component() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertEquals("NW", customer_1.getFirst_component());
+    }
 
-/** 
-* 
-* Method: setSecond_component() 
-* 
-*/ 
-@Ignore
-public void testSetSecond_component() throws Exception { 
-//TODO: Test goes here... 
-/* 
-try { 
-   Method method = Customer.getClass().getMethod("setSecond_component");
-   method.setAccessible(true); 
-   method.invoke(<Object>, <Parameters>); 
-} catch(NoSuchMethodException e) { 
-} catch(IllegalAccessException e) { 
-} catch(InvocationTargetException e) { 
-} 
-*/ 
-} 
+    /**
+     * Method: getSecond_component()
+     */
+    @Test
+    public void testGetSecond_component() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertEquals("2011", customer_1.getSecond_component());
+    }
 
-/** 
-* 
-* Method: setThird_component() 
-* 
-*/ 
-@Ignore
-public void testSetThird_component() throws Exception { 
-//TODO: Test goes here... 
-/* 
-try { 
-   Method method = Customer.getClass().getMethod("setThird_component");
-   method.setAccessible(true); 
-   method.invoke(<Object>, <Parameters>); 
-} catch(NoSuchMethodException e) { 
-} catch(IllegalAccessException e) { 
-} catch(InvocationTargetException e) { 
-} 
-*/ 
-} 
+    /**
+     * Method: getThird_component()
+     */
+    @Test
+    public void testGetThird_component() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertEquals("07", customer_1.getThird_component());
+    }
 
-} 
+    /**
+     * Method: getDrivingLicenceNumber()
+     */
+    @Test
+    public void testGetDrivingLicenceNumber() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertEquals("NW-2011-07", customer_1.getDrivingLicenceNumber());
+    }
+
+    /**
+     * Method: isFullLicence()
+     */
+    @Test
+    public void testIsFullLicence() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertTrue(customer_1.isFullLicence());
+        Customer customer_2 = new Customer("Nicky", "Wu", date, false, "07");
+        assertFalse(customer_2.isFullLicence());
+    }
+
+    /**
+     * Method: getDrivingLicenceIssueDate()
+     */
+    @Test
+    public void testGetDrivingLicenceIssuedate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertEquals("2011.3.3", customer_1.getDrivingLicenceIssueDate());
+    }
+
+    /**
+     * Method: getCustomersName()
+     */
+    @Test
+    public void testGetCustomersName() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        assertEquals("Nick Wu", customer_1.getCustomersName());
+    }
+
+    /**
+     * Method: getCustomersDob()
+     */
+    @Test
+    public void testGetCustomersDob() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2011, 2 + 1, 3);
+        Date date = calendar.getTime();
+        Customer customer_1 = new Customer("Nick", "Wu", date, true, "07");
+        //Test default date of birth
+        assertEquals("1970.1.1", customer_1.getCustomersDob());
+        //Test setDateOfBirth method
+        customer_1.setCustomersDob(date);
+        assertEquals("2011.3.3", customer_1.getCustomersDob());
+    }
+}
